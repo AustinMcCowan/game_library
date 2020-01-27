@@ -30,6 +30,8 @@ class Library(object):
             
             raise Exception("Data failed to update")     
 '''
+# First entry to plug in.
+#games = {1: ['RPG', 'Nier:Automa', 'PlatinumGames', 'Square Enix', 'PS4', '3/17/2017', '10', 'single', '39.99', 'Yes', '1/15/2018', 'Become as gods.']}
 
 def add_or_edit_game():
     print("adding or editing game...")
