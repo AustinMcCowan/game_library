@@ -10,6 +10,6 @@ backup_content = {1: ['RPG', 'Nier:Automata', 'PlatinumGames', 'Square Enix', 'P
                   2: ['TBT', 'Advanced Wars: Days of Ruin', 'IntelligentSystems', 'Nintendo','Nintendo DS', '1/21/2008', '9.5', 'Either', '20.00', 'No', ' ', 'Last entry to the Advanced Wars series']}
 def fix_it():
     datafile = open("game_lib.pickle", "wb")
-    pickle.dump(content, datafile)
+    pickle.dump(backup_content, datafile)
     datafile.close()
     
