@@ -7,6 +7,9 @@
 import pickle
 import data_reboot as dr
 
+global category_list
+category_list = ["genre","title", "developer", "publisher", "system", "release date", "rating", "single/multi/either", "price", "beat it", "purchase date"]
+
 class Library(object):
     def __init__(self):
         
@@ -55,10 +58,42 @@ def print_info(game):
     print("Purchase Date:", content.games[game][10])
     print("Notes:", content.games[game][11])
     print("----------------------------")
+ 
+def search_by(category, term):
+    category_value = None
+    if category.lower() == "genre":
+        category_value = 0
+    elif category.lower() == "title":
+        category_value = 1
+    elif category.lower() == "developer":
+        category_value = 2
+    elif category.lower() == "publisher":
+        category_value = 3
+    elif category.lower() == "system":
+        category_value = 4
+    elif category.lower() == "release date":
+        category_value = 5
+    elif category.lower() == "rating":
+        category_value = 6
+    elif category.lower() == "single/multi/either":
+        category_value = 7
+    elif category.lower() == "price":
+        category_value = 8
+    elif category.lower() == "beat it":
+        category_value = 9
+    elif category.lower() == "purchase date":
+        category_value = 10
     
-def search_by_title():
-    print("\nSearching by title...\n")
-    
+
+    search_success = False
+    for game in content.games:
+        if term in content.games[game][category_value]:
+            print_info(game)
+            search_success = True
+    if search_success == False:
+        print("\nNothing found...\n")
+
+        
 def remove_game():
     print("\nRemoving a game...\n")
 
@@ -76,11 +111,11 @@ quit = False
 
 # Main
 while quit != True: 
-    
+    print("")
     print('''Choosable actions:
              1) Add/Edit Game
              2) Print All Games
-             3) Search By Title
+             3) Search By Category
              4) Remove a Game
              5) Save Database
              Q) Quit\n''')
@@ -95,8 +130,40 @@ while quit != True:
             print_info(game)
             
     elif user_command == "3":
-        search_title = input("Please input a title to search")
-        search_by_title()
+        stop_search = False
+        while stop_search != True:
+            acceptable_answer = False
+            search_category = input("Please input a category to search: ")
+            if search_category not in category_list:
+                print("\n--Category given is either mispelled or does not exist--\n")
+                
+                while acceptable_answer != True:
+                    repeat_choice = input("Try again? ")
+                    if repeat_choice.lower() in "yes":
+                        acceptable_answer = True
+                        
+                    elif repeat_choice.lower() in "no":
+                        stop_search = True
+                        acceptable_answer = True
+                        
+                    else:
+                        print("Please give a yes or no")
+                        continue
+            else:
+                search_term = input("Please input a search term for " + search_category + ": ")
+                search_by(search_category, search_term)
+               
+            while acceptable_answer != True:
+                repeat_choice = input("Search again? ")
+                if repeat_choice.lower() in "yes":
+                    acceptable_answer = True                   
+                elif repeat_choice.lower() in "no":
+                    stop_search = True
+                    acceptable_answer = True
+                else:
+                    print("Please give a yes or no")
+                    continue
+     
     
     elif user_command == "4":
         remove_game()
