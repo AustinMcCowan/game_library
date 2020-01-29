@@ -40,22 +40,21 @@ class Library(object):
 def add_or_edit_game():
     print("\nAdding or editing game...\n")
 
-def print_info():
-    for game in content.games:
-        print("----------------------------")
-        print("Genre:", content.games[game][0])
-        print("Title:", content.games[game][1])
-        print("Developer:", content.games[game][2])
-        print("Publisher:", content.games[game][3])
-        print("System:", content.games[game][4])
-        print("Release Date:", content.games[game][5])
-        print("Rating:", content.games[game][6])
-        print("Single/Multi/Either:", content.games[game][7])
-        print("Price:", content.games[game][8])
-        print("Beat it?:", content.games[game][9])
-        print("Purchase Date:", content.games[game][10])
-        print("Notes:", content.games[game][11])
-        print("----------------------------")
+def print_info(game):
+    print("----------------------------")
+    print("Genre:", content.games[game][0])
+    print("Title:", content.games[game][1])
+    print("Developer:", content.games[game][2])
+    print("Publisher:", content.games[game][3])
+    print("System:", content.games[game][4])
+    print("Release Date:", content.games[game][5])
+    print("Rating:", content.games[game][6])
+    print("Single/Multi/Either:", content.games[game][7])
+    print("Price:", content.games[game][8])
+    print("Beat it?:", content.games[game][9])
+    print("Purchase Date:", content.games[game][10])
+    print("Notes:", content.games[game][11])
+    print("----------------------------")
     
 def search_by_title():
     print("\nSearching by title...\n")
@@ -92,9 +91,11 @@ while quit != True:
         add_or_edit_game()
     
     elif user_command == "2":
-        print_info()
+        for game in content.games:
+            print_info(game)
             
-    elif user_command == "3":       
+    elif user_command == "3":
+        search_title = input("Please input a title to search")
         search_by_title()
     
     elif user_command == "4":
