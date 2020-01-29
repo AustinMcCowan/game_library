@@ -87,7 +87,7 @@ def search_by(category, term):
 
     search_success = False
     for game in content.games:
-        if term in content.games[game][category_value]:
+        if term.lower() in content.games[game][category_value].lower():
             print_info(game)
             search_success = True
     if search_success == False:
@@ -132,9 +132,10 @@ while quit != True:
     elif user_command == "3":
         stop_search = False
         while stop_search != True:
-            acceptable_answer = False
+            acceptable_answer = False   
+            print("Capable choices: ", category_list)
             search_category = input("Please input a category to search: ")
-            if search_category not in category_list:
+            if search_category.lower() not in category_list:
                 print("\n--Category given is either mispelled or does not exist--\n")
                 
                 while acceptable_answer != True:
@@ -152,6 +153,7 @@ while quit != True:
             else:
                 search_term = input("Please input a search term for " + search_category + ": ")
                 search_by(search_category, search_term)
+             
                
             while acceptable_answer != True:
                 repeat_choice = input("Search again? ")
