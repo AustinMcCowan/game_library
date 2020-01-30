@@ -56,11 +56,13 @@ def add_or_edit_game(option):
         alt_category_list = category_list
         alt_category_list.append('notes')
         while not valid:
+            # Input content
             for i in range(12):
                 category_input = input("Please give the "+alt_category_list[i]+": ")
                 new_entry.append(category_input)
             print("\nYour results: \n", new_entry)
             
+            # Asks user if the data inputted is correct
             acceptable_answer = False
             while acceptable_answer != True:
                 repeat_choice = input("Is this correct? ")
@@ -68,12 +70,13 @@ def add_or_edit_game(option):
                     valid = True
                     acceptable_answer = True
                 elif repeat_choice.lower() in "no":
+                    new_entry = []
                     acceptable_answer = True
                 else:
                     print("Please give a yes or no")
-                    continue            
-            
-            
+                    continue
+                
+        content.games[new_key] = new_entry    
         
     elif option in ["edit", "e"]:
         print("\nEditing...\n")
