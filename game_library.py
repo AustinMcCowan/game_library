@@ -41,45 +41,44 @@ class Library(object):
 
 
 
-def add_or_edit_game(option):
-    if option in ["add", "a"]:
-        # This sets the value for the new key, it compensates for deleting a game (as each entry in games has a unique key)
-        for i in range(len(content.games)):
-            if (i+1) not in content.games.keys():
-                new_key = i+1
-                break
-            else:
-                new_key = len(content.games)+1
-                
-        new_entry = []
-        valid = False
-        alt_category_list = category_list
-        alt_category_list.append('notes')
-        while not valid:
-            # Input content
-            for i in range(12):
-                category_input = input("Please give the "+alt_category_list[i]+": ")
-                new_entry.append(category_input)
-            print("\nYour results: \n", new_entry)
+def add_game():
+    # This sets the value for the new key, it compensates for deleting a game (as each entry in games has a unique key)
+    for i in range(len(content.games)):
+        if (i+1) not in content.games.keys():
+            new_key = i+1
+            break
+        else:
+            new_key = len(content.games)+1
             
-            # Asks user if the data inputted is correct
-            acceptable_answer = False
-            while acceptable_answer != True:
-                repeat_choice = input("Is this correct? ")
-                if repeat_choice.lower() in "yes":
-                    valid = True
-                    acceptable_answer = True
-                elif repeat_choice.lower() in "no":
-                    new_entry = []
-                    acceptable_answer = True
-                else:
-                    print("Please give a yes or no")
-                    continue
-                
-        content.games[new_key] = new_entry    
+    new_entry = []
+    valid = False
+    alt_category_list = category_list
+    alt_category_list.append('notes')
+    while not valid:
+        # Input content
+        for i in range(12):
+            category_input = input("Please give the "+alt_category_list[i]+": ")
+            new_entry.append(category_input)
+        print("\nYour results: \n", new_entry)
         
-    elif option in ["edit", "e"]:
-        print("\nEditing...\n")
+        # Asks user if the data inputted is correct
+        acceptable_answer = False
+        while acceptable_answer != True:
+            repeat_choice = input("Is this correct? ")
+            if repeat_choice.lower() in "yes":
+                valid = True
+                acceptable_answer = True
+            elif repeat_choice.lower() in "no":
+                new_entry = []
+                acceptable_answer = True
+            else:
+                print("Please give a yes or no")
+                continue
+            
+    content.games[new_key] = new_entry    
+
+def edit_game():
+    print("Editing game...")
 
 def print_info(game):
     print("----------------------------")
@@ -167,7 +166,7 @@ while quit != True:
         while stop_loop != True:
             option = input("Do you want to add or edit a game?: ")
             acceptable_answer = False
-            if option not in ["add", "a", "edit", "e", "no", "n"]:  
+            if option.lower() not in ["add", "a", "edit", "e", "no", "n"]:  
                 while acceptable_answer != True:
                     print("--inputted invalid option--")
                     repeat_choice = input("Try again? ")
@@ -180,12 +179,15 @@ while quit != True:
                         print("Please give a yes or no")
                         continue
                     
-            elif option in "no":
+            elif option.lower() in "no":
                 stop_loop = True
                 
-            else:        
-                add_or_edit_game(option)
-    
+            elif option.lower() in ["add", "a"]:
+                add_game()
+                
+            elif option.lower() in ["edit", "e"]:
+                edit_game()
+                
     # Print all    
     elif user_command == "2":
         for game in content.games:
