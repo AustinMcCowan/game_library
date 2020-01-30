@@ -9,6 +9,9 @@ import data_reboot as dr
 
 global category_list
 category_list = ["genre","title", "developer", "publisher", "system", "release date", "rating", "single/multi/either", "price", "beat it", "purchase date"]
+global alt_category_list
+alt_category_list = category_list
+alt_category_list.append('notes')
 
 class Library(object):
     def __init__(self):
@@ -52,8 +55,6 @@ def add_game():
             
     new_entry = []
     valid = False
-    alt_category_list = category_list
-    alt_category_list.append('notes')
     while not valid:
         # Input content
         for i in range(12):
@@ -78,7 +79,25 @@ def add_game():
     content.games[new_key] = new_entry    
 
 def edit_game():
-    print("Editing game...")
+    print("\nHere is the library: ")
+    for key in content.games.keys():
+        print(key, "-", content.games[key][1])
+        print("")
+        
+    alphabet = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')    
+    edit_key = int(input("which game do you want to change?: "))
+    for i in range(12):
+        print("\nCurrent "+alt_category_list[i]+": "+content.games[edit_key][i])
+        edit_input = input("Please give a new "+alt_category_list[i]+": ")
+        empty_check = True
+        for i in range(len(alphabet)):
+            if alphabet[i] in edit_input:
+                empty_check = False
+            
+        if empty_check == True:
+            pass
+        else:
+            content.games[edit_key][edit_input]
 
 def print_info(game):
     print("----------------------------")
@@ -164,7 +183,7 @@ while quit != True:
         stop_loop = False
     
         while stop_loop != True:
-            option = input("Do you want to add or edit a game?: ")
+            option = input("\nDo you want to add or edit a game?: ")
             acceptable_answer = False
             if option.lower() not in ["add", "a", "edit", "e", "no", "n"]:  
                 while acceptable_answer != True:
