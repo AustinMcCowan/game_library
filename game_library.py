@@ -40,8 +40,43 @@ class Library(object):
             raise Exception("Data failed to save")     
 
 
-def add_or_edit_game():
-    print("\nAdding or editing game...\n")
+
+def add_or_edit_game(option):
+    if option in ["add", "a"]:
+        # This sets the value for the new key, it compensates for deleting a game (as each entry in games has a unique key)
+        for i in range(len(content.games)):
+            if (i+1) not in content.games.keys():
+                new_key = i+1
+                break
+            else:
+                new_key = len(content.games)+1
+                
+        new_entry = []
+        valid = False
+        alt_category_list = category_list
+        alt_category_list.append('notes')
+        while not valid:
+            for i in range(12):
+                category_input = input("Please give the "+alt_category_list[i]+": ")
+                new_entry.append(category_input)
+            print("\nYour results: \n", new_entry)
+            
+            acceptable_answer = False
+            while acceptable_answer != True:
+                repeat_choice = input("Is this correct? ")
+                if repeat_choice.lower() in "yes":
+                    valid = True
+                    acceptable_answer = True
+                elif repeat_choice.lower() in "no":
+                    acceptable_answer = True
+                else:
+                    print("Please give a yes or no")
+                    continue            
+            
+            
+        
+    elif option in ["edit", "e"]:
+        print("\nEditing...\n")
 
 def print_info(game):
     print("----------------------------")
@@ -122,13 +157,38 @@ while quit != True:
     
     user_command = input("Please choose an option: ")
     
+    # Add or edit
     if user_command == "1":
-        add_or_edit_game()
+        stop_loop = False
     
+        while stop_loop != True:
+            option = input("Do you want to add or edit a game?: ")
+            acceptable_answer = False
+            if option not in ["add", "a", "edit", "e", "no", "n"]:  
+                while acceptable_answer != True:
+                    print("--inputted invalid option--")
+                    repeat_choice = input("Try again? ")
+                    if repeat_choice.lower() in "yes":
+                        acceptable_answer = True                   
+                    elif repeat_choice.lower() in "no":
+                        stop_loop = True
+                        acceptable_answer = True
+                    else:
+                        print("Please give a yes or no")
+                        continue
+                    
+            elif option in "no":
+                stop_loop = True
+                
+            else:        
+                add_or_edit_game(option)
+    
+    # Print all    
     elif user_command == "2":
         for game in content.games:
             print_info(game)
-            
+    
+    # Search by        
     elif user_command == "3":
         stop_search = False
         while stop_search != True:
@@ -166,13 +226,15 @@ while quit != True:
                     print("Please give a yes or no")
                     continue
      
-    
+    # Remove
     elif user_command == "4":
         remove_game()
-        
+    
+    # Save    
     elif user_command == "5":
         save_database()
-        
+    
+    # Quit    
     elif user_command.lower() == "q":
         quit_app()
         quit = True
