@@ -86,6 +86,7 @@ def edit_game():
         
     alphabet = ('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z')    
     edit_key = int(input("which game do you want to change?: "))
+    
     for i in range(12):
         print("\nCurrent "+alt_category_list[i]+": "+content.games[edit_key][i])
         edit_input = input("Please give a new "+alt_category_list[i]+": ")
@@ -149,16 +150,71 @@ def search_by(category, term):
     if search_success == False:
         print("\nNothing found...\n")
 
-        
+# Remove a game        
 def remove_game():
-    print("\nRemoving a game...\n")
+    print("---------------\n")
+    for key in content.games.keys():
+        print(key, "-", content.games[key][1])
+        print("")
+    
+    valid = False
+    while not valid:
+        try:
+            game_to_remove = int(input("What game would you like to remove? "))
+         
+        # Something other than a number was entered    
+        except:
+            retry_check = input("\nSomething other than a number was inputted, do you want to retry? ")
+            if retry_check.lower() in "yes":
+                continue
+            else:
+                valid = True
+                continue
+            
+        # An invalid number has been entered
+        if game_to_remove not in content.games.keys():
+            retry_check = input("\nThere is no game at this number, do you want to retry? ")
+            if retry_check.lower() in "yes":
+                continue
+            else:
+                valid = True
+                continue
+         
+        # Confirm the user wants to remove the game   
+        else:
+            confirm_validation = input("\nAre you sure you want to remove this game?: ")
+            if confirm_validation.lower() in "yes":
+                print("removing game\n")
+                content.games.pop(game_to_remove)
+                
+            # Asks the user if they want to remove another game
+            retry_check = input("Would you like to remove another game? ")
+            if retry_check.lower() in "yes":
+                continue
+            else:
+                valid = True
+                continue
+        
+            
 
 def save_database():
     print("\nSaving Changes...\n")
     content.save()
     
 def quit_app():
-    print("\nQuitting...\n")
+    print("\nPreparing to Quit...\n")
+    validation = input("Would you like to save changes? ")
+    valid_end = False
+    while valid_end != True:
+        if validation.lower() in "yes":
+            save_database()
+            valid_end = True
+        elif validation.lower() in "no":
+            valid_end = True
+        else:
+            print("Please give a yes or no")
+            continue
+        
     
 
 # Initial stuff that needs to be added before main program    
@@ -219,9 +275,11 @@ while quit != True:
             acceptable_answer = False   
             print("Capable choices: ", category_list)
             search_category = input("Please input a category to search: ")
+            
             if search_category.lower() not in category_list:
                 print("\n--Category given is either mispelled or does not exist--\n")
                 
+                # Check for retry
                 while acceptable_answer != True:
                     repeat_choice = input("Try again? ")
                     if repeat_choice.lower() in "yes":
@@ -238,7 +296,7 @@ while quit != True:
                 search_term = input("Please input a search term for " + search_category + ": ")
                 search_by(search_category, search_term)
              
-               
+            # Check if user wants to reattempt  
             while acceptable_answer != True:
                 repeat_choice = input("Search again? ")
                 if repeat_choice.lower() in "yes":
