@@ -161,7 +161,7 @@ def remove_game():
     while not valid:
         try:
             game_to_remove = int(input("What game would you like to remove? "))
-         
+                
         # Something other than a number was entered    
         except:
             retry_check = input("\nSomething other than a number was inputted, do you want to retry? ")
@@ -185,8 +185,19 @@ def remove_game():
             confirm_validation = input("\nAre you sure you want to remove this game?: ")
             if confirm_validation.lower() in "yes":
                 print("removing game\n")
-                content.games.pop(game_to_remove)
-                
+                temp_dictionary = content.games
+                try:
+                    # Dominic's Code that will compensate for holes being created. WILL BUG IF HOLES ALREADY EXIST
+                    for key in range(1, len(content.games)+1):
+                        if key >= game_to_remove and key != len(content.games):
+                            content.games[key] = content.games[key+1]
+                        if key == len(content.games):
+                            content.games.pop(key)
+                except:
+                    # If anything goes wrong, simply just remove the selected game at its location. failsafe 
+                    content.games = temp_dictionary
+                    content.games.pop(game_to_remove)
+                    
             # Asks the user if they want to remove another game
             retry_check = input("Would you like to remove another game? ")
             if retry_check.lower() in "yes":
